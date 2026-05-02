@@ -8,31 +8,38 @@ A drop-in WebView-based wrapper around the Kavimo video player for React Native 
 
 ## Installation
 
+### React Native (CLI)
+
 ```bash
-npm install vis3-react-native react-native-webview
+npm install @kavimo-tehran/vis3-react-native react-native-webview
 ```
 
-Or with yarn:
+With **npm 7+** (default since 2021), peer dependencies are installed automatically, so this single command is enough.
+
+If you're on **npm 6 or older**, install peers manually:
 
 ```bash
-yarn add vis3-react-native react-native-webview
+npm install @kavimo-tehran/vis3-react-native
+npm install react-native-webview react react-native
 ```
 
 ### Expo
 
-If you're using Expo, install the WebView dependency with the Expo CLI so the correct version is selected for your SDK:
+For Expo projects, install `react-native-webview` with the Expo CLI so the version matches your SDK:
 
 ```bash
 npx expo install react-native-webview
-npm install vis3-react-native
+npm install @kavimo-tehran/vis3-react-native
 ```
+
+> ⚠️ Don't run `npm install react-native-webview` on an Expo project — it may install an incompatible version. Always use `npx expo install` for native modules.
 
 ---
 
 ## Use in React Native:
 
 ```jsx
-import { Vis3 } from "vis3-react-native";
+import { Vis3 } from "@kavimo-tehran/vis3-react-native";
 
 export default function App() {
   const handleLoad = (media) => {
@@ -54,11 +61,11 @@ export default function App() {
 
 ## Use in Expo:
 
-Identical to React Native. Just make sure `react-native-webview` is installed via `npx expo install`.
+Identical to React Native.
 
 ```jsx
 import { View } from "react-native";
-import { Vis3 } from "vis3-react-native";
+import { Vis3 } from "@kavimo-tehran/vis3-react-native";
 
 export default function HomeScreen() {
   return (
@@ -90,6 +97,20 @@ export default function HomeScreen() {
 
 ---
 
+## Peer Dependencies
+
+This package declares the following peer dependencies. With **npm 7+** they are installed automatically.
+
+| Package                | Minimum version |
+| ---------------------- | --------------- |
+| `react`                | `>=17.0.0`      |
+| `react-native`         | `>=0.70.0`      |
+| `react-native-webview` | `>=11.0.0`      |
+
+We use peer dependencies (instead of regular `dependencies`) for `react-native-webview` because it ships native code. Bundling it as a regular dependency would cause **duplicate native modules** in your app and lead to crashes. This pattern is standard for any React Native library that wraps a native module.
+
+---
+
 ## Fullscreen behavior
 
 The Kavimo player has a built-in fullscreen button. When the user taps it, the component listens for the player's `VisIframeEnter` / `VisIframeExit` postMessage events and expands the WebView to fill the screen using a transparent native `Modal`. The same WebView instance is reused, so playback is **not** interrupted when entering or exiting fullscreen.
@@ -102,13 +123,13 @@ If you want the screen to rotate to landscape when entering fullscreen (similar 
 npx expo install expo-screen-orientation
 ```
 
-Wrap the component or call `lockAsync` from your own code based on the `onPlay` / fullscreen state. The component itself does not depend on `expo-screen-orientation` to keep the package minimal.
+Then call `lockAsync` from your own code based on fullscreen state. The component itself does not depend on `expo-screen-orientation` to keep the package minimal.
 
 ---
 
 ## Safe area on Android / iOS
 
-When entering fullscreen, the Modal sits above the system UI. If the player controls overlap with the notch or navigation bar on your device, wrap your app with `SafeAreaProvider` and adjust accordingly:
+When entering fullscreen, the Modal sits above the system UI. If the player controls overlap with the notch or navigation bar on your device, wrap your app with `SafeAreaProvider`:
 
 ```bash
 npx expo install react-native-safe-area-context
