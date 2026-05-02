@@ -1,8 +1,9 @@
 {
   "name": "@kavimo-tehran/vis3-react-native",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Kavimo Vis3 React Native Component - WebView-based video player wrapper for Kavimo streaming service",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "files": [
     "src",
     "README.md",
@@ -29,15 +30,9 @@
     "react-native-webview": ">=11.0.0"
   },
   "peerDependenciesMeta": {
-    "react": {
-      "optional": false
-    },
-    "react-native": {
-      "optional": false
-    },
-    "react-native-webview": {
-      "optional": false
-    }
+    "react": { "optional": false },
+    "react-native": { "optional": false },
+    "react-native-webview": { "optional": false }
   },
   "repository": {
     "type": "git",
