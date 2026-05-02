@@ -48,10 +48,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/<your-username>/vis3-react-native.git"
+    "url": "git+https://github.com/kavimo-tehran/vis3-react-native.git"
   },
   "bugs": {
-    "url": "https://github.com/<your-username>/vis3-react-native/issues"
+    "url": "https://github.com/kavimo-tehran/vis3-react-native/issues"
   },
-  "homepage": "https://github.com/<your-username>/vis3-react-native#readme"
+  "homepage": "https://github.com/kavimo-tehran/vis3-react-native#readme"
 }
