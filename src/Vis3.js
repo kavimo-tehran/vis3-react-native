@@ -1,8 +1,30 @@
-import React from "react";
+import React, { useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { WebView } from "react-native-webview";
+import createMedia from "./createMedia";
 
-const Vis3 = ({ domainName, ID }) => {
+const Vis3 = ({ domainName, ID, onLoad }) => {
+  const webviewRef = useRef(null);
+  const eventHandlers = useRef({});
+  const pendingRequests = useRef({});
+
+  const handleMessage = (event) => {
+    try {
+      const msg = JSON.parse(event.nativeEvent.data);
+
+      if (msg.event === "loaded" && onLoad)
+        onLoad(createMedia(webviewRef, eventHandlers, pendingRequests));
+      if (msg.event === "play") eventHandlers.current.play?.();
+      if (msg.event === "pause") eventHandlers.current.pause?.();
+      if (msg.event === "ended") eventHandlers.current.ended?.();
+      if (msg.event === "timeupdate") eventHandlers.current.timeupdate?.(msg.data);
+      if (msg.event === "get" && pendingRequests.current[msg.id]) {
+        pendingRequests.current[msg.id](msg.value);
+        delete pendingRequests.current[msg.id];
+      }
+    } catch (e) {}
+  };
+
   const html = `
     <!DOCTYPE html>
     <html>
@@ -17,8 +39,23 @@ const Vis3 = ({ domainName, ID }) => {
     <body>
       <div id="vis3-player"></div>
       <script>
+        function send(event, data) {
+          var msg = { event: event };
+          if (data !== undefined) msg.data = data;
+          window.ReactNativeWebView.postMessage(JSON.stringify(msg));
+        }
+
+        window.vis3_callback = function(media) {
+          window.__vis3api = media.api;
+          send('loaded');
+          media.api.events.OnPlay(function() { send('play'); });
+          media.api.events.OnPause(function() { send('pause'); });
+          media.api.events.OnEnded(function() { send('ended'); });
+          media.api.events.OnTimeupdate(function(time) { send('timeupdate', time); });
+        };
+
         var s = document.createElement('script');
-        s.src = 'https://${domainName}/${ID}/embed?container=vis3-player';
+        s.src = 'https://${domainName}/${ID}/embed?container=vis3-player&callback=vis3_callback';
         document.body.appendChild(s);
       </script>
     </body>
@@ -28,7 +65,9 @@ const Vis3 = ({ domainName, ID }) => {
   return (
     <View style={styles.container}>
       <WebView
+        ref={webviewRef}
         source={{ html, baseUrl: `https://${domainName}` }}
+        onMessage={handleMessage}
         allowsInlineMediaPlayback
         mediaPlaybackRequiresUserAction={false}
         javaScriptEnabled
