@@ -11,15 +11,16 @@ const Vis3 = ({ domainName, ID }) => {
       <style>
         * { margin: 0; padding: 0; }
         body, html { background: #000; width: 100%; height: 100%; overflow: hidden; }
-        iframe { width: 100%; height: 100%; border: 0; }
+        #vis3-player { width: 100%; height: 100%; }
       </style>
     </head>
     <body>
-      <iframe
-        src="https://${domainName}/${ID}/iframe"
-        allow="autoplay; fullscreen"
-        allowfullscreen
-      ></iframe>
+      <div id="vis3-player"></div>
+      <script>
+        var s = document.createElement('script');
+        s.src = 'https://${domainName}/${ID}/embed?container=vis3-player';
+        document.body.appendChild(s);
+      </script>
     </body>
     </html>
   `;
