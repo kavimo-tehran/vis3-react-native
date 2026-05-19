@@ -1,6 +1,6 @@
 {
   "name": "@kavimo-tehran/vis3-react-native",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Kavimo Vis3 React Native Component - WebView-based video player wrapper for Kavimo streaming service",
   "main": "src/index.js",
   "types": "src/index.d.ts",
