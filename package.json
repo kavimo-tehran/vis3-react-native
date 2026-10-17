@@ -16,7 +16,11 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "echo \"No tests yet\" && exit 0"
+    "test": "echo \"No tests yet\" && exit 0",
+    "release": "npm version patch",
+    "release:minor": "npm version minor",
+    "release:major": "npm version major",
+    "postversion": "npm publish && git push --follow-tags"
   },
   "keywords": [
     "react-native",
