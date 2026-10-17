@@ -120,6 +120,10 @@ const handleLoad = (media) => {
   // Forward the media by 10 seconds
   mediaAPI.actions.Forward(10);
 
+  // Tear the player down and stop buffering. Unmounting <Vis3 /> takes the whole WebView
+  // with it, so you only need this for a WebView you keep mounted (a tab navigator, say).
+  mediaAPI.actions.Destroy();
+
   // DRM Text
   mediaAPI.DRMText({
     text: ['info@kavimo.com', '00123456789', 'more text'],
@@ -185,6 +189,7 @@ const handleLoad = (media) => {
 | `actions.Seek(time)` | Seek to a specific time (seconds).          |
 | `actions.Rewind()`  | Rewind by 5 seconds.                         |
 | `actions.Forward(sec)` | Forward by N seconds.                   |
+| `actions.Destroy()` | Tear the player down and stop buffering. Unmounting `<Vis3 />` destroys the WebView anyway, so this is only for a WebView you keep mounted. |
 
 ### events
 

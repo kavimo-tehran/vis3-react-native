@@ -23,6 +23,7 @@ export interface Vis3MediaAPI {
     Seek: (time: number) => void;
     Rewind: () => void;
     Forward: (sec: number) => void;
+    Destroy: () => void;
   };
   events: {
     OnPlay: (cb: () => void) => void;
