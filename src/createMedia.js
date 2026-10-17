@@ -25,11 +25,8 @@ const createMedia = (webviewRef, eventHandlers, pendingRequests) => {
         Seek: (time) => inject(`window.__vis3api?.actions.Seek(${Number(time)})`),
         Rewind: () => inject("window.__vis3api?.actions.Rewind()"),
         Forward: (sec) => inject(`window.__vis3api?.actions.Forward(${Number(sec)})`),
-        // Unmounting the component tears the whole WebView down, which takes hls.js with
-        // it, so this is not needed for cleanup. It is here for a WebView the host keeps
-        // mounted — a tab navigator, say — where buffering should stop without unmounting.
-        Destroy: () =>
-          inject("window.__vis3api?.actions.Destroy(); window.__vis3api = null"),
+        // Unmounting already tears the WebView down; this is for one the host keeps mounted
+        Destroy: () => inject("window.__vis3api?.actions.Destroy(); window.__vis3api = null"),
       },
       events: {
         OnPlay: (cb) => { eventHandlers.current.play = cb; },
